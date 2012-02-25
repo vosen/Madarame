@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SiteWeb", "Site\SiteWeb\SiteWeb.csproj", "{B2230FA1-DFBF-466B-9B33-1137034A411C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebFrontend", "Web\Frontend\WebFrontend.csproj", "{B2230FA1-DFBF-466B-9B33-1137034A411C}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "SiteWebApp", "Site\SiteWebApp\SiteWebApp.fsproj", "{BC3AA913-16E1-40D5-922A-18B25E288D56}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "WebBackend", "Web\Backend\WebBackend.fsproj", "{BC3AA913-16E1-40D5-922A-18B25E288D56}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "NameCompletionProvider", "NameCompletionProvider\NameCompletionProvider.fsproj", "{66720A62-C6C5-4A34-8BCE-9CD54F438284}"
 EndProject

@@ -9,10 +9,11 @@
     <OutputType>Library</OutputType>
     <RootNamespace>MsdnWebApp</RootNamespace>
     <AssemblyName>WebApp</AssemblyName>
-    <targetframeworkversion>4.0</targetframeworkversion>
-    <Name>WebApp</Name>
+    <targetframeworkversion>v4.0</targetframeworkversion>
+    <Name>WebBackend</Name>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\Madarame\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
