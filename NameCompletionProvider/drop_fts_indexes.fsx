@@ -22,6 +22,7 @@ let AddIndex(connString) =
     conn.Execute("DROP INDEX IF EXISTS words_trgm_index;", transaction=dbTrans) |> ignore
     conn.Execute("DROP FUNCTION IF EXISTS tokenize_default(text);", transaction=dbTrans) |> ignore
     conn.Execute("DROP FUNCTION IF EXISTS correct_title_token(text);", transaction=dbTrans) |> ignore
+    conn.Execute("DROP FUNCTION IF EXISTS plainto_corrected_tsquery(text);", transaction=dbTrans) |> ignore
     conn.Execute("DROP FUNCTION IF EXISTS find_title(text, integer);", transaction=dbTrans) |> ignore
     dbTrans.Commit()
 

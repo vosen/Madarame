@@ -36,6 +36,9 @@ let AddIndex(connString) =
                     WHERE word % $1
                     ORDER by similarity($1, word) DESC LIMIT 1;
                     $$ LANGUAGE SQL STABLE;", transaction=dbTrans) |> ignore
+    conn.Execute(@"CREATE FUNCTION plainto_corrected_tsquery(text) RETURNS tsquery AS $$
+                    SELECT (SELECT string_agg(correct_title_token(token), '&') as corrected FROM tokenize_default($1) as token)::tsquery;
+                    $$ LANGUAGE SQL STABLE;", transaction=dbTrans) |> ignore
     conn.Execute(@"CREATE FUNCTION find_title(text, integer) RETURNS TABLE(id int, title text) AS $$
                     SELECT id, COALESCE(""EnglishName"", ""RomajiName"") AS title
                     FROM    ""Anime"",
