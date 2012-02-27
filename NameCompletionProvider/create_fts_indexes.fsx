@@ -40,20 +40,21 @@ let AddIndex(connString) =
                     SELECT (SELECT string_agg(correct_title_token(token), '&') as corrected FROM tokenize_default($1) as token)::tsquery;
                     $$ LANGUAGE SQL STABLE;", transaction=dbTrans) |> ignore
     conn.Execute(@"CREATE FUNCTION find_title(text, integer) RETURNS TABLE(id int, title text) AS $$
+                    WITH precalc AS (SELECT plainto_corrected_tsquery($1) as value)
                     SELECT id, COALESCE(""EnglishName"", ""RomajiName"") AS title
                     FROM    ""Anime"",
                             (SELECT id FROM (
-                                SELECT ""Anime_Id"" AS id, ts_rank(to_tsvector('simple', ""Text""), query) AS rank 
-                                    FROM ""Anime_Synonyms"", ""Anime"", plainto_corrected_tsquery($1) AS query
-                                    WHERE to_tsvector('simple', ""Text"") @@ query AND ""Anime_Id"" = ""Id""
-                                UNION SELECT ""Id"" AS id, ts_rank(to_tsvector('simple', ""RomajiName""), query) AS rank 
-                                    FROM ""Anime"", plainto_corrected_tsquery($1) AS query
-                                    WHERE to_tsvector('simple', ""RomajiName"") @@ query
-                                UNION SELECT ""Id"" AS id, ts_rank(to_tsvector('simple', ""EnglishName""), query) AS rank 
-                                    FROM ""Anime"", plainto_corrected_tsquery($1) AS query
-                                    WHERE to_tsvector('simple', ""EnglishName"") @@ query) AS sub
+                                SELECT ""Anime_Id"" AS id, ts_rank(to_tsvector('simple', ""Text""), (SELECT value FROM precalc)) AS rank 
+                                    FROM ""Anime_Synonyms"", ""Anime""
+                                    WHERE to_tsvector('simple', ""Text"") @@ (SELECT value FROM precalc) AND ""Anime_Id"" = ""Id""
+                                UNION SELECT ""Id"" AS id, ts_rank(to_tsvector('simple', ""RomajiName""), (SELECT value FROM precalc)) AS rank 
+                                    FROM ""Anime""
+                                    WHERE to_tsvector('simple', ""RomajiName"") @@ (SELECT value FROM precalc)
+                                UNION SELECT ""Id"" AS id, ts_rank(to_tsvector('simple', ""EnglishName""), (SELECT value FROM precalc)) AS rank 
+                                    FROM ""Anime""
+                                    WHERE to_tsvector('simple', ""EnglishName"") @@ (SELECT value FROM precalc)) AS sub
                                 GROUP BY id
-                                ORDER BY max(rank) DESC, id DESC
+                                ORDER BY max(rank) DESC, id ASC
                                 LIMIT $2) as sub
                     WHERE id = ""Anime"".""Id"";
                     $$ LANGUAGE sql STABLE;", transaction=dbTrans) |> ignore
