@@ -4,20 +4,22 @@
 #r "NameCompletionProvider.dll"
 #r "ServiceStack.dll"
 #r "ServiceStack.Interfaces.dll"
+#r "System.Configuration.dll"
 
 open Vosen.Madarame
 open System
 open ServiceStack.WebHost.Endpoints
+open System.Configuration
 
-type AppHost =
-    inherit AppHostHttpListenerBase
-    new() = { inherit AppHostHttpListenerBase("NameCompletionService", typeof<NameCompletionService>.Assembly) }
+type AppHost(connString) =
+    inherit AppHostHttpListenerBase("Test service", typeof<NameCompletionService>.Assembly)
     override this.Configure container =
-        base.Routes
-            .Add<SearchQuery>("/test") |> ignore 
+        container.Register<NameCompletionService>(fun c -> NameCompletionService(connString)) |> ignore
+        base.Routes.Add<SearchQuery>("/test") |> ignore
 
 let main() =
-    let appHost = new AppHost()
+    let connString = ConfigurationManager.OpenExeConfiguration(@".\" + fsi.CommandLineArgs.[0]).ConnectionStrings.ConnectionStrings.[0].ConnectionString
+    let appHost = new AppHost(connString)
     appHost.Init()
     appHost.Start("http://localhost:8080/")
     printfn "listening on http://localhost:8080/ ..."
