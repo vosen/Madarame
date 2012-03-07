@@ -5,6 +5,12 @@
   -->
 
 <configuration>
+
+  <connectionStrings>
+    <clear/>
+    <add name="Postgres" connectionString="Server=127.0.0.1;Port=5432;Database=db;User Id=user;Password=pass;" />
+  </connectionStrings>
+  
   <appSettings>
     <add key="webpages:Version" value="1.0.0.0"/>
     <add key="ClientValidationEnabled" value="true"/>
@@ -61,7 +67,7 @@
 
   <system.webServer>
     <validation validateIntegratedModeConfiguration="false"/>
-    <modules runAllManagedModulesForAllRequests="true"/>
+    <modules runAllManagedModulesForAllRequests="false"/>
   </system.webServer>
 
   <runtime>
