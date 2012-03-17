@@ -8,7 +8,7 @@ open System.Data
 open Dapper
 
 type SearchQuery = { mutable term : string }
-type AnimeResponse = { mutable label : string; mutable value : int }
+type AnimeResponse = { mutable value : string; mutable id : int }
 type DbQuery = { term: string; limit: int }
 
 type NameCompletionService(connString) =
@@ -25,4 +25,4 @@ type NameCompletionService(connString) =
                 match query.term.Length with
                 | _ when (query.term.Length < 3) -> Array.empty :> obj
                 | _ -> this.UseConnection(fun conn ->
-                    conn.Query<AnimeResponse>("SELECT title as label, id as value FROM find_title(:term, :limit);", { term = query.term; limit = 20 } )) :> obj
+                    conn.Query<AnimeResponse>("SELECT title as value, id as id FROM find_title(:term, :limit);", { term = query.term; limit = 20 } )) :> obj

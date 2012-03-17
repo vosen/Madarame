@@ -6,6 +6,8 @@ using ServiceStack.WebHost.Endpoints;
 using Vosen.Madarame;
 using System.Configuration;
 using ServiceStack.ServiceHost;
+using System.Web.Routing;
+using System.Web.Mvc;
 
 namespace Web
 {
@@ -13,7 +15,9 @@ namespace Web
     {
         public CompletionHost()
             : base("Title completion", typeof(NameCompletionService).Assembly)
-        { }
+        {
+            RouteTable.Routes.IgnoreRoute("api/{*pathInfo}");
+        }
 
         public override void Configure(Funq.Container container)
         {
