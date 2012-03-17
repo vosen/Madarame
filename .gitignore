@@ -30,3 +30,5 @@ _ReSharper*/
 
 packages/*
 Web/Frontend/Web.config
+*crunchproject*
+*crunchsolution*
