@@ -5,7 +5,9 @@
   {
       new Web.CompletionHost().Init();
       base.Start();
-      ControllerBuilder.Current.SetControllerFactory(new ServiceStack.Mvc.FunqControllerFactory(new Funq.Container()));
+      var container = new Funq.Container();
+      container.Register(cont => new MsdnWeb.Controllers.HomeController(null)).ReusedWithin(Funq.ReuseScope.None);
+      ControllerBuilder.Current.SetControllerFactory(new ServiceStack.Mvc.FunqControllerFactory(container));
   }
 
 </script>

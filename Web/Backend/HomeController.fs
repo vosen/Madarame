@@ -6,7 +6,7 @@ open System.Web.Mvc
 type Rating = { Name : string; Value: string }
 
 [<HandleError>]
-type HomeController() =
+type HomeController(recommender : Vosen.Madarame.TitleRecommender) =
     inherit Controller()
 
     static let Ratings =
@@ -24,6 +24,7 @@ type HomeController() =
         |]
 
     member this.Index () =
+        printfn "%A" recommender.GetHashCode
         this.View(Ratings) :> ActionResult
 
     //member this.AddTitle() =
