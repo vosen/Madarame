@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Numerics", "..\mathnet-nume
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "NativeSvd", "NativeSvd\NativeSvd.fsproj", "{CD32B225-5534-49E7-B9AD-A62F286229FC}"
 EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "ModelGenerator", "ModelGenerator\ModelGenerator.pyproj", "{B87DB8BE-91BD-463C-83A3-887FAEAE2E6B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,8 @@ Global
 		{CD32B225-5534-49E7-B9AD-A62F286229FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CD32B225-5534-49E7-B9AD-A62F286229FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CD32B225-5534-49E7-B9AD-A62F286229FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B87DB8BE-91BD-463C-83A3-887FAEAE2E6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B87DB8BE-91BD-463C-83A3-887FAEAE2E6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
