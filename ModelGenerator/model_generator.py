@@ -40,7 +40,7 @@ def filter_too_small_cols(csc_mat, col_limit):
     full_cols = set(range(0, csc_mat.shape[1])) - empty_cols
     full_len = len(full_cols)
     empty_cols = sorted(empty_cols)
-    full_cols = sorted(sorted(full_cols)[-len(empty_cols):], reverse=True)
+    full_cols = reversed(sorted(full_cols)[-len(empty_cols):])
     old_ids = {}
     for (empty_idx, full_idx) in zip(empty_cols, full_cols):
         if empty_idx > full_idx:
@@ -63,16 +63,19 @@ def join_old_id_dicts(dict1, dict2):
     result.update(dict1)
     return result
 
-def row_nnz_average(row):
-    return numpy.mean(map(lambda x: row[0,x], row.nonzero()[1]))
+# mat is in csr format
+def row_nnz_average(mat, row_idx):
+    start = mat.indptr[row_idx]
+    stop = mat.indptr[row_idx + 1]
+    return numpy.mean(mat.data[start:stop])
 
 def build_title_mapping(ids_dict, title_count):
-    doc_to_title = []
+    doc_to_title = [0] * title_count
     for i in range(0, title_count):
         if i in ids_dict:
-            doc_to_title.append(ids_dict[i])
+            doc_to_title[i] = ids_dict[i]
         else:
-            doc_to_title.append(i)
+            doc_to_title[i] = i
     title_to_doc = [0] * (max(doc_to_title) + 1)
     for idx, val in enumerate(doc_to_title):
         title_to_doc[val] = idx
@@ -90,12 +93,13 @@ def generate_model(in_path, title_limit, user_limit, features, out_path):
     (mat, old_ids_2) = filter_too_small(mat.tocsc(), 1, 1)
     print "Filtered insignificant titles and users"
     # matrix is in csr format, calc row nnz averages and convert to csc
-    averages = map(lambda x: row_nnz_average(mat.getrow(x)), range(0, mat.shape[0]))
+    averages = map(lambda x: row_nnz_average(mat,x), range(0, mat.shape[0]))
     mat = mat.tocsc()
     # build compact titleid translation tables
     old_ids = join_old_id_dicts(old_ids_1, old_ids_2)
     (title_to_document, document_to_tile) = build_title_mapping(old_ids, mat.shape[0])
     # run svd
+    print "Built additional data"
     (ut, s, vt) = sparsesvd(mat.tocsc(), features)
     print "Factorization finished"
     s_sqrt = numpy.diag(numpy.sqrt(s))
