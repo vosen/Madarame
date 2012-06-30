@@ -1,4 +1,4 @@
-import sys
+import sys, numpy
 import psycopg2 as pg
 from collections import defaultdict
 from scipy import sparse
@@ -8,6 +8,7 @@ from scipy.io import savemat
 def parse_args():
     if(len(sys.argv) != 6):
         print("USAGE: model_generator.py db_string title_low_limit user_low_limit features out_file")
+        print('model_generator.py "host=127.0.0.1 dbname=mal-utf8 user=vosen" 50 5 14 result')
         quit()
     return (sys.argv[1], int(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]), sys.argv[5])
 
@@ -18,8 +19,8 @@ def load_scores(db):
     curr.execute('SELECT "Anime_Id", "User_Id", "Score" FROM "Seen"')
     raw_scores = curr.fetchall()
     curr.close()
-    rows, cols, vals = zip(raw_scores)
-    return sparse.csc_matrix(vals, (rows,cols))
+    rows, cols, vals = zip(*raw_scores)
+    return sparse.csc_matrix((vals, (rows,cols)), dtype = numpy.double)
 
 # filter out rows and cols that are too insignificant
 # abuse transpose because it's supercheap
@@ -39,9 +40,11 @@ def filter_too_small_cols(csc_mat, col_limit):
     full_cols = set(range(0, csc_mat.shape[1])) - empty_cols
     full_len = len(full_cols)
     empty_cols = sorted(empty_cols)
-    full_cols = sorted(full_cols)[-len(empty_cols):]
+    full_cols = sorted(sorted(full_cols)[-len(empty_cols):], reverse=True)
     old_ids = {}
     for (empty_idx, full_idx) in zip(empty_cols, full_cols):
+        if empty_idx > full_idx:
+            continue
         col_diag.indices[full_idx] = empty_idx
         col_diag.indices[empty_idx] = full_idx
         old_ids[empty_idx] = full_idx
@@ -60,10 +63,16 @@ def join_old_id_dicts(dict1, dict2):
     result.update(dict1)
     return result
 
+def row_nnz_average(row):
+    return numpy.mean(map(lambda x: row[0,x], row.nonzero()[1]))
+
 def build_title_mapping(ids_dict, title_count):
-    doc_to_title = list(range(0, title_count))
-    for new_id, old_id in ids_dict.items():
-        doc_to_title[new_id] = old_id
+    doc_to_title = []
+    for i in range(0, title_count):
+        if i in ids_dict:
+            doc_to_title.append(ids_dict[i])
+        else:
+            doc_to_title.append(i)
     title_to_doc = [0] * (max(doc_to_title) + 1)
     for idx, val in enumerate(doc_to_title):
         title_to_doc[val] = idx
@@ -78,20 +87,24 @@ def generate_model(in_path, title_limit, user_limit, features, out_path):
     print "Loaded scores"
     # filter insignificant titles/users, second filtering to remove empty cols/rows
     (mat, old_ids_1) = filter_too_small(scores, title_limit, user_limit)
-    (mat, old_ids_2) = filter_too_small(mat, 1, 1)
-    old_ids = join_old_id_dicts(old_ids_1, old_ids_2)
+    (mat, old_ids_2) = filter_too_small(mat.tocsc(), 1, 1)
+    print "Filtered insignificant titles and users"
+    # matrix is in csr format, calc row nnz averages and convert to csc
+    averages = map(lambda x: row_nnz_average(mat.getrow(x)), range(0, mat.shape[0]))
+    mat = mat.tocsc()
     # build compact titleid translation tables
+    old_ids = join_old_id_dicts(old_ids_1, old_ids_2)
     (title_to_document, document_to_tile) = build_title_mapping(old_ids, mat.shape[0])
-    # calculate averages
-    averages = map(lambda x: x[0], csr_mat.mean(1).tolist())
     # run svd
     (ut, s, vt) = sparsesvd(mat.tocsc(), features)
+    print "Factorization finished"
     s_sqrt = numpy.diag(numpy.sqrt(s))
     s_inv = numpy.diag(numpy.power(s,-1))
     terms = ut.transpose().dot(s_sqrt)
     documents = s_sqrt.dot(s_inv).dot(ut)
     # dump results
-    savemat(out_path, {"Terms": terms, "Documents": documents, "Averages": averages, "TitleMapping": title_to_document, "DocumentMapping" : document_to_tile})
+    savemat(out_path, {"Terms": terms, "Documents": documents, "Averages": averages, "TitleMapping": title_to_document, "DocumentMapping" : document_to_tile}, oned_as='row')
+    print "Saved generated results"
 
 # build dense scores (eg: {10 : {2,3}, 231 : {4,5}} to {1 : {2,3}, 2 : {4,5}} )
 # and generate translation tables
