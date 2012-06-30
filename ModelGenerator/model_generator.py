@@ -1,23 +1,25 @@
 import sys
 import psycopg2 as pg
+from collections import defaultdict
 from scipy import sparse
 from sparsesvd import sparsesvd
 from scipy.io import savemat
 
-def parse_ags():
-    if(sys.argv != 4):
-        print("USAGE: model_generator.py features db_string out_file")
+def parse_args():
+    if(len(sys.argv) != 6):
+        print("USAGE: model_generator.py db_string title_low_limit user_low_limit features out_file")
         quit()
-    return (int(sys.argv[1]), sys.argv[2], sys.argv[3])
+    return (sys.argv[1], int(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]), sys.argv[5])
 
 # returns coo matrix with all elements
 def load_scores(db):
     scores = defaultdict(dict)
     curr = db.cursor()
-    raw_scores = db.curr("SELECT Anime_Id, User_Id, Score FROM Seen").fetchall()
+    curr.execute('SELECT "Anime_Id", "User_Id", "Score" FROM "Seen"')
+    raw_scores = curr.fetchall()
     curr.close()
     rows, cols, vals = zip(raw_scores)
-    return sparse.coo_matrix(vals, (rows,cols))
+    return sparse.csc_matrix(vals, (rows,cols))
 
 # filter out rows and cols that are too insignificant
 # abuse transpose because it's supercheap
@@ -73,8 +75,9 @@ def generate_model(in_path, title_limit, user_limit, features, out_path):
     # load scores
     scores = load_scores(db)
     db.close()
+    print "Loaded scores"
     # filter insignificant titles/users, second filtering to remove empty cols/rows
-    (mat, old_ids_1) = filter_too_small(sparse.tocsc(), title_limit, user_limit)
+    (mat, old_ids_1) = filter_too_small(scores, title_limit, user_limit)
     (mat, old_ids_2) = filter_too_small(mat, 1, 1)
     old_ids = join_old_id_dicts(old_ids_1, old_ids_2)
     # build compact titleid translation tables
@@ -83,11 +86,10 @@ def generate_model(in_path, title_limit, user_limit, features, out_path):
     averages = map(lambda x: x[0], csr_mat.mean(1).tolist())
     # run svd
     (ut, s, vt) = sparsesvd(mat.tocsc(), features)
-    u = ut.transpose()
     s_sqrt = numpy.diag(numpy.sqrt(s))
     s_inv = numpy.diag(numpy.power(s,-1))
-    terms = u.dot(s_sqrt)
-    documents = (s_sqrt.dot(s_inv)).dot(u)
+    terms = ut.transpose().dot(s_sqrt)
+    documents = s_sqrt.dot(s_inv).dot(ut)
     # dump results
     savemat(out_path, {"Terms": terms, "Documents": documents, "Averages": averages, "TitleMapping": title_to_document, "DocumentMapping" : document_to_tile})
 
