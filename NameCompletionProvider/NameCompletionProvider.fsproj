@@ -42,11 +42,6 @@
     <None Include="run_service.fsx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="create_fts_indexes.fsx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="drop_fts_indexes.fsx" />
-    <Content Include="pgsql_fts_parser_notes.txt" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />

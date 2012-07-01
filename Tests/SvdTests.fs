@@ -22,7 +22,7 @@ type Svd() as this =
         let Esqrt = new Single.DenseMatrix(svd.Rank, svd.Rank)
         Esqrt.SetDiagonal(svd.S() |> Seq.map sqrt |> Seq.toArray)
         let terms = U.Multiply(Esqrt)
-        let documents = Esqrt.Multiply(E.Inverse()).Multiply(U)
+        let documents = Esqrt.Multiply(E.Inverse()).Multiply(U.Transpose())
         this.model <- RawSvdModel(terms.RowEnumerator() |> Seq.map (fun (i, r) -> r) |> Seq.toArray, documents)
         this.averages <- averages
 

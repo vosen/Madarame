@@ -19,12 +19,6 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "TitleRecommender", "SvdMode
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Tests", "Tests\Tests.fsproj", "{445FC616-ADF1-414C-81B0-F12812578CAD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Numerics", "..\mathnet-numerics\src\Numerics\Numerics.csproj", "{B7CAE5F4-A23F-4438-B5BE-41226618B695}"
-EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "NativeSvd", "NativeSvd\NativeSvd.fsproj", "{CD32B225-5534-49E7-B9AD-A62F286229FC}"
-EndProject
-Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "ModelGenerator", "ModelGenerator\ModelGenerator.pyproj", "{B87DB8BE-91BD-463C-83A3-887FAEAE2E6B}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,16 +49,6 @@ Global
 		{445FC616-ADF1-414C-81B0-F12812578CAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{445FC616-ADF1-414C-81B0-F12812578CAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{445FC616-ADF1-414C-81B0-F12812578CAD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B7CAE5F4-A23F-4438-B5BE-41226618B695}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B7CAE5F4-A23F-4438-B5BE-41226618B695}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B7CAE5F4-A23F-4438-B5BE-41226618B695}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B7CAE5F4-A23F-4438-B5BE-41226618B695}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CD32B225-5534-49E7-B9AD-A62F286229FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CD32B225-5534-49E7-B9AD-A62F286229FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CD32B225-5534-49E7-B9AD-A62F286229FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CD32B225-5534-49E7-B9AD-A62F286229FC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B87DB8BE-91BD-463C-83A3-887FAEAE2E6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B87DB8BE-91BD-463C-83A3-887FAEAE2E6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
