@@ -61,15 +61,15 @@
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
-    <Reference Include="zlib.net">
-      <HintPath>..\..\packages\zlib.net.1.0.3.0\lib\zlib.net.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <ProjectReference Include="..\..\SvdModel\TitleRecommender.fsproj">
       <Name>TitleRecommender</Name>
       <Project>{93db5509-c343-4350-b3f7-6f345797dbb6}</Project>
       <Private>True</Private>
     </ProjectReference>
+    <Reference Include="zlib.net">
+      <HintPath>..\..\packages\zlib.net.1.0.4.0\lib\zlib.net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
 	     Other similar extension points exist, see Microsoft.Common.targets.
