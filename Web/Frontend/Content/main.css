@@ -1,14 +1,66 @@
+h3, h2, h1 {
+    font-family: 'Lato', sans-serif;
+    font-weight:700;
+}
+
 h1 {
-    font-size: 60px;
-    line-height: 60px;
+    font-size: 90px;
+    line-height: 70px;
     text-align:center;
-    font-weight:bold;
 }
 
 h2 {
     line-height: 24px;
     text-align: right;
 }
-h3, h2,h1 {
-    font-family: 'Lato', sans-serif;
+
+small strong{
+    color: #005580;
+}
+
+#title-list {
+    width: 100%;
+}
+
+#title-list tbody tr td:first-child{
+    width: 100%;
+}
+
+#title-list input {
+    width:100%;
+    box-shadow:none !important;
+    border-color:#BBBBBB !important;
+}
+
+#title-list select {
+    width:auto;
+    border-radius: 0px 3px 3px 0px;
+    outline: none;
+    border:1px solid #bbbbbb; 
+}
+
+#title-list button {
+    margin-bottom: 9px;
+    margin-left:3px;
+}
+
+#title-list tfoot button {
+    margin-left:0px;
+    width:100%;
+}
+
+#title-list tfoot td:first-child {
+    padding-right: 1px;
+}
+
+#title-list tfoot td:last-child {
+    padding-left:2px;
+}
+
+input,select,textarea{
+    outline:none;
+}
+
+.typeahead {
+    margin-top:0px;
 }
