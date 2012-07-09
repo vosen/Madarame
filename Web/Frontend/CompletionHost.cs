@@ -17,6 +17,7 @@ namespace Web
             : base("Title completion", typeof(NameCompletionService).Assembly)
         {
             RouteTable.Routes.IgnoreRoute("api/{*pathInfo}");
+            RouteTable.Routes.IgnoreRoute("{*favicon}", new { favicon = @"(.*/)?favicon.ico(/.*)?" });
         }
 
         public override void Configure(Funq.Container container)
