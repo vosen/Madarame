@@ -3,11 +3,10 @@
 
   protected void Application_Start(Object sender, EventArgs e) 
   {
-      new Web.CompletionHost().Init();
-      base.Start();
-      var container = new Funq.Container();
+      var container = Web.CompletionHost.Start();
+      ControllerBuilder.Current.SetControllerFactory(new Web.GlobalFunqControllerFactory(container));
       container.Register(cont => new MsdnWeb.Controllers.HomeController(null)).ReusedWithin(Funq.ReuseScope.None);
-      ControllerBuilder.Current.SetControllerFactory(new ServiceStack.Mvc.FunqControllerFactory(container));
+      base.Start();
   }
 
 </script>

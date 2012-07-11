@@ -8,6 +8,7 @@ using System.Configuration;
 using ServiceStack.ServiceHost;
 using System.Web.Routing;
 using System.Web.Mvc;
+using Funq;
 
 namespace Web
 {
@@ -20,7 +21,7 @@ namespace Web
             RouteTable.Routes.IgnoreRoute("{*favicon}", new { favicon = @"(.*/)?favicon.ico(/.*)?" });
         }
 
-        public override void Configure(Funq.Container container)
+        public override void Configure(Container container)
         {
             string connString = ConfigurationManager.ConnectionStrings[0].ConnectionString;
             container.Register(c => new NameCompletionService(connString));
@@ -32,6 +33,12 @@ namespace Web
                 AllowJsonpRequests = false
             });
 #endif
+        }
+
+        public static Container Start()
+        {
+            new CompletionHost().Init();
+            return CompletionHost.Instance.Container;
         }
     }
 }
