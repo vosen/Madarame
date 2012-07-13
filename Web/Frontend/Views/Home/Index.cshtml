@@ -31,7 +31,7 @@
                 <div class="span4">
                     <h3>Rate anime you have seen</h3>
                     <div class="well ">
-                    @using (Html.BeginForm("FromList", "Recommend", FormMethod.Post)) {
+                    @using (Html.BeginForm("list", "recommend", FormMethod.Post)) {
                         <div>
                             <table border="0" cellpadding="0" id="title-list">
                             <tbody></tbody>
@@ -65,7 +65,7 @@
                     <div class="well">
                         <form class="form-inline">
                             <input style="width:180px" type="text" class="input input-large disabled" disabled="disabled" placeholder="Coming soon..."/>
-                            <button type="submit" class="btn btn-primary disabled">Recommend</button></br>
+                            <button type="submit" class="btn btn-primary disabled">Recommend</button>
                         </form>
                         <p>
                         Examples:

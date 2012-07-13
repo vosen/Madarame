@@ -14,6 +14,9 @@ type Global() =
 
         routes.IgnoreRoute("{resource}.axd/{*pathInfo}")
         routes.MapRoute("",
+                        "recommend/list",
+                        dict [ "controller" => "Recommend"; "action" => "FromList" ]) |> ignore
+        routes.MapRoute("",
                         "recommend/mal/{login}",
                         dict [ "controller" => "Recommend"; "action" => "FromMAL" ]) |> ignore
         routes.MapRoute("Default",

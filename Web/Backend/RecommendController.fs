@@ -9,12 +9,12 @@ type RecommendController() =
     inherit Controller()
 
     [<AcceptVerbs(HttpVerbs.Post)>]
-    member this.FromList(titles : string[], ids : int[], ratings : int[]) =
-        match (ids, ratings) with
+    member this.FromList(title : string[], id : int[], rating : int[]) =
+        match (id, rating) with
         | (null, _)
         | (_, null) -> this.View()
         | _ ->
-            Seq.zip ids ratings
+            Seq.zip id rating
             |> Seq.filter(fun (id, rating) -> 
                 match id with
                 | _ when id <= 0 -> false
