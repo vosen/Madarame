@@ -4,8 +4,10 @@ open System.Web
 open System.Web.Mvc
 open System.Collections.Generic
 
+type Recommendations = { Masterpiece: string list; Great : string list; VeryGood : string list }
+
 [<HandleError>]
-type RecommendController() =
+type RecommendController(recommender : Vosen.Madarame.TitleRecommender) =
     inherit Controller()
 
     [<AcceptVerbs(HttpVerbs.Post)>]
@@ -20,8 +22,8 @@ type RecommendController() =
                 | _ when id <= 0 -> false
                 | _ -> true)
             |> ignore
-            this.View()
+            this.View(box null)
 
     member this.FromMAL(login : string) =
-        this.View()
+        this.View(box null)
  

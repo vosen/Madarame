@@ -1,0 +1,50 @@
+﻿@model MsdnWeb.Controllers.Recommendations
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="@Url.Content("~/Scripts/jquery-1.7.2.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap-typeahead.js")" type="text/javascript"></script>
+    <link rel="stylesheet" href="@Url.Content("~/Content/bootstrap.css")" type="text/css"/>
+    <link rel="stylesheet" href="@Url.Content("~/Content/bootstrap-responsive.css")" type="text/css"/>
+    <link rel="stylesheet" href="@Url.Content("~/Content/list.css")" type="text/css"/>
+    <link href='http://fonts.googleapis.com/css?family=Lato:700' rel='stylesheet' type='text/css'>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+    <title>Untitled 2</title>
+</head>
+<body style="height:100%">
+    <div style="margin-top:20px" class="container">
+    <div class="row">
+        <div class="span2">
+            <h2>
+            <small>
+                These shows have been picked to fit your taste. <strong>Enjoy!</strong>
+            </small>
+            </h2>
+        </div>
+        <div class="span10" >
+            <table class="table table-condensed table-titles rated10">
+            <tr><td rowspan=4><h1 class="rating">10/10</h1></td><td><span>title 10</span></td></tr>
+                            <tr><td>title 20</td></tr>
+                            <tr><td>title 30</td></tr>
+                            <tr><td>&nbsp;</td></tr>
+            </table>
+            <table class="table table-condensed table-titles rated9">
+            <tr><td rowspan=4><h1 class="rating">9/10</h1></td><td><span>title 10</span></td></tr>
+                            <tr><td>title 20</td></tr>
+                            <tr><td>title 30</td></tr>
+                            <tr><td>&nbsp;</td></tr>
+            </table>
+            <table class="table table-condensed table-titles rated8">
+            <tr><td rowspan=4><h1 class="rating">8/10</h1></td><td><span>title 10</span></td></tr>
+                            <tr><td>title 20</td></tr>
+                            <tr><td>title 30</td></tr>
+                            <tr><td>&nbsp;</td></tr>
+            </table>
+        </div>
+    </div>
+    </div>
+</body>
+</html>

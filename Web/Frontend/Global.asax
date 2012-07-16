@@ -5,7 +5,7 @@
   {
       var container = Web.CompletionHost.Start();
       ControllerBuilder.Current.SetControllerFactory(new Web.GlobalFunqControllerFactory(container));
-      container.Register(cont => new MsdnWeb.Controllers.HomeController(null)).ReusedWithin(Funq.ReuseScope.None);
+      container.Register(cont => new MsdnWeb.Controllers.RecommendController(null)).ReusedWithin(Funq.ReuseScope.None);
       base.Start();
   }
 
