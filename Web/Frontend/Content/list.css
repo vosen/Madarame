@@ -27,7 +27,7 @@ small strong {
 
 .table-titles tr:first-child td {
     border-top:0px;
-    padding: 0px 0px 4px 0px;
+    padding: 0px 4px 4px 0px;
 }
 
 
@@ -37,7 +37,7 @@ small strong {
     height: 100%;
     position: relative;
     width: 100%;
-    padding: 4px 4px 0px 4px;
+    padding: 4px 0px 0px 4px;
 }
 
 .table-titles tr:first-child td:first-child {
@@ -46,7 +46,15 @@ small strong {
     padding:0px;
     width:104px;
     text-shadow: 1px 1px #316231;
+    background-image: -o-linear-gradient(-45deg, rgba(0, 0, 0, 0.08) 25%, transparent 25%, transparent 50%, rgba(0, 0, 0, 0.08) 50%, rgba(0, 0, 0, 0.08) 75%, transparent 75%, transparent);
+    background-image: -webkit-linear-gradient(-45deg, rgba(0, 0, 0, 0.08) 25%, transparent 25%, transparent 50%, rgba(0, 0, 0, 0.08) 50%, rgba(0, 0, 0, 0.08) 75%, transparent 75%, transparent);
     background-image: -moz-linear-gradient(-45deg, rgba(0, 0, 0, 0.08) 25%, transparent 25%, transparent 50%, rgba(0, 0, 0, 0.08) 50%, rgba(0, 0, 0, 0.08) 75%, transparent 75%, transparent);
+    background-image: -ms-linear-gradient(-45deg, rgba(0, 0, 0, 0.08) 25%, transparent 25%, transparent 50%, rgba(0, 0, 0, 0.08) 50%, rgba(0, 0, 0, 0.08) 75%, transparent 75%, transparent);
+    background-image: -webkit-gradient(linear,left top, right bottom, color-stop(0.25, rgba(0, 0, 0, 0.08)), color-stop(0.25, transparent), color-stop(0.5, transparent), color-stop(0.5, rgba(0, 0, 0, 0.08)), color-stop(0.75, rgba(0, 0, 0, 0.08)), color-stop(0.75, transparent), to(transparent));
+    background-image: linear-gradient(-45deg, rgba(0, 0, 0, 0.08) 25%, transparent 25%, transparent 50%, rgba(0, 0, 0, 0.08) 50%, rgba(0, 0, 0, 0.08) 75%, transparent 75%, transparent);
+    -webkit-background-size: 40px 40px;
+    -moz-background-size: 40px 40px;
+    -o-background-size: 40px 40px;
     background-size: 40px 40px;
     border-radius: 4px 0px 0px 4px;
     border-top:0px;

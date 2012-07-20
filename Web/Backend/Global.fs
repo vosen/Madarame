@@ -13,14 +13,14 @@ type Global() =
         let inline (=>) a b = a, box b
 
         routes.IgnoreRoute("{resource}.axd/{*pathInfo}")
-        routes.MapRoute("",
-                        "recommend/list",
-                        dict [ "controller" => "Recommend"; "action" => "FromList" ]) |> ignore
-        routes.MapRoute("",
-                        "recommend/mal/{login}",
+        routes.MapRoute("recommend/list",
+                        dict [ "controller" => "Recommend"; "action" => "FromList" ],
+                        dict [ "httpMethod" => HttpMethodConstraint("POST") ]) |> ignore
+        routes.MapRoute("recommend/list",
+                        dict [ "controller" => "Home"; "action" => "Index" ]) |> ignore
+        routes.MapRoute("recommend/mal/{login}",
                         dict [ "controller" => "Recommend"; "action" => "FromMAL" ]) |> ignore
-        routes.MapRoute("Default",
-                        "{controller}/{action}/{id}",
+        routes.MapRoute("{controller}/{action}/{id}",
                         dict [ "controller" => "Home"; "action" => "Index"; "id" => UrlParameter.Optional ]) |> ignore
 
     member this.Start() =
