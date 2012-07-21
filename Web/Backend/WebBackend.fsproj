@@ -50,17 +50,37 @@
       <HintPath>..\..\packages\MathNet.Numerics.2.1.2\lib\Net40\MathNet.Numerics.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Mono.Security">
+      <HintPath>..\..\packages\Npgsql.2.0.11\lib\Net40\Mono.Security.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="FSharp.Core">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Npgsql">
+      <HintPath>..\..\packages\Npgsql.2.0.11\lib\Net40\Npgsql.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Numerics" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <ProjectReference Include="..\..\dapper-dot-net\Dapper\Dapper.csproj">
+      <Name>Dapper</Name>
+      <Project>{daf737e1-05b5-4189-a5aa-dac6233b64d7}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\NameCompletionProvider\NameCompletionProvider.fsproj">
+      <Name>NameCompletionProvider</Name>
+      <Project>{66720a62-c6c5-4a34-8bce-9cd54f438284}</Project>
+      <Private>True</Private>
+    </ProjectReference>
     <ProjectReference Include="..\..\SvdModel\TitleRecommender.fsproj">
       <Name>TitleRecommender</Name>
       <Project>{93db5509-c343-4350-b3f7-6f345797dbb6}</Project>

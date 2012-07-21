@@ -8,24 +8,26 @@ open MathNet.Numerics.FSharp
 // wrapper for a svd model supporting:
 // * rating normalization/denormalization
 // * title/documentId translation
-type TitleRecommender(model : RawSvdModel, averages: float32[], titleToDocumentMapping: int[], documentToTitleMapping : int[]) =
+type TitleRecommender(model : RawSvdModel, averages: float[], titleToDocumentMapping: int[], documentToTitleMapping : int[]) =
 
     static member Load(path : string) =
-        let reader = Single.IO.MatlabMatrixReader(path)
+        let reader = Double.IO.MatlabMatrixReader(path)
         let matrices = reader.ReadMatrices()
         let terms = matrices.["Terms"].RowEnumerator() |> Seq.map snd |> Seq.toArray
         let documents = matrices.["Documents"]
-        let averages = matrices.["Averages"].Column(0) |> Seq.toArray
-        let titleMapping = matrices.["TitleMapping"].Column(0) |> Seq.map int |> Seq.toArray
-        let documentMapping = matrices.["DocumentMapping"].Column(0) |> Seq.map int |> Seq.toArray
+        let averages = matrices.["Averages"].Row(0) |> Seq.toArray
+        let titleMapping = matrices.["TitleMapping"].Row(0) |> Seq.map int |> Seq.toArray
+        let documentMapping = matrices.["DocumentMapping"].Row(0) |> Seq.map int |> Seq.toArray
         TitleRecommender(RawSvdModel(terms, documents), averages, titleMapping, documentMapping)
 
-    member this.PredictUnknown(ratings : seq<int * int>) =
+    member this.PredictUnknown(ratings : (int * int) array) =
         ratings
         // filter out incorrect ids
-        |> Seq.filter (fun (id, rating) -> this.IsCorrectId id)
+        |> Array.filter (fun (id, rating) -> this.IsCorrectId id)
         // map ids to correct ones and normalize scores
-        |> Seq.map (fun (id, rating) -> (titleToDocumentMapping.[id], averages.[id] - float32(rating)))
+        |> Array.map (fun (id, rating) -> 
+            let docId = titleToDocumentMapping.[id]
+            (docId, float(rating) - averages.[docId]))
         // send to recommender
         |> model.PredictUnknown
         // denormalize ids and scores back
@@ -33,3 +35,9 @@ type TitleRecommender(model : RawSvdModel, averages: float32[], titleToDocumentM
 
     member private this.IsCorrectId id =
         id >= 0 && id < titleToDocumentMapping.Length && titleToDocumentMapping.[id] >= 0
+
+    member this.DocumentsCount 
+        with get() = documentToTitleMapping.Length
+
+    member this.TitlesCount 
+        with get() = titleToDocumentMapping.Length

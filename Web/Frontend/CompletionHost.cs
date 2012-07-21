@@ -15,7 +15,7 @@ namespace Web
     public class CompletionHost : AppHostBase
     {
         public CompletionHost()
-            : base("Title completion", typeof(NameCompletionService).Assembly)
+            : base("Title completion", typeof(NameCompletion.Service).Assembly)
         {
             RouteTable.Routes.IgnoreRoute("api/{*pathInfo}");
             RouteTable.Routes.IgnoreRoute("{*favicon}", new { favicon = @"(.*/)?favicon.ico(/.*)?" });
@@ -24,7 +24,7 @@ namespace Web
         public override void Configure(Container container)
         {
             string connString = ConfigurationManager.ConnectionStrings[0].ConnectionString;
-            container.Register(c => new NameCompletionService(connString));
+            container.Register(c => new NameCompletion.Service(connString));
 #if !DEBUG
             SetConfig(new EndpointHostConfig()
             {

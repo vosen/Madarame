@@ -1,4 +1,4 @@
-﻿namespace Vosen.Madarame
+﻿module Vosen.Madarame.NameCompletion
 
 open System
 open ServiceStack.ServiceHost
@@ -8,21 +8,35 @@ open System.Data
 open Dapper
 
 type SearchQuery = { mutable term : string }
-type AnimeResponse = { mutable value : string; mutable id : int }
+type AnimeTitle = { mutable value : string; mutable id : int }
 type DbQuery = { term: string; limit: int }
 
-type NameCompletionService(connString) =
+let Complete connFunc resultLimit (term : string) : AnimeTitle seq =
+        match term with
+        | null -> Seq.empty
+        | _ ->
+            match term.Length with
+            | _ when (term.Length < 3) -> Seq.empty
+            | _ -> connFunc(fun (conn : NpgsqlConnection) ->
+                        conn.Query<AnimeTitle>("SELECT title as value, id as id FROM find_title(:term, :limit);", { term = term; limit = resultLimit } ))
+
+type Service(connString) =
+    static member Complete ((term : string), connFunc, (?termLimit: int), (?resultLimit: int)) : AnimeTitle seq =
+        let termLimit = defaultArg termLimit 3
+        let resultLimit = defaultArg resultLimit 20
+        match term with
+        | null -> Seq.empty
+        | _ ->
+            match term.Length with
+            | _ when (term.Length < termLimit) -> Seq.empty
+            | _ -> connFunc(fun (conn : NpgsqlConnection) ->
+                        conn.Query<AnimeTitle>("SELECT title as value, id as id FROM find_title(:term, :limit);", { term = term; limit = resultLimit } ))
+
     member this.UseConnection(func) =
         use npgConn = new NpgsqlConnection(connString.ToString())
         npgConn.Open()
         func(npgConn)
 
+
     interface IService<SearchQuery> with
-        member this.Execute (query) = 
-            match query.term with
-            | null -> Array.empty :> obj
-            | _ ->
-                match query.term.Length with
-                | _ when (query.term.Length < 3) -> Array.empty :> obj
-                | _ -> this.UseConnection(fun conn ->
-                    conn.Query<AnimeResponse>("SELECT title as value, id as id FROM find_title(:term, :limit);", { term = query.term; limit = 20 } )) :> obj
+        member this.Execute (query) = box (Complete this.UseConnection 10 query.term)
