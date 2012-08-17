@@ -4,3 +4,6 @@
 [submodule "mathnet-numerics"]
 	path = mathnet-numerics
 	url = git@bitbucket.org:vosen/madarame.git/mathnet-numerics/
+[submodule "funksvd.core"]
+	path = funksvd.core
+	url = git@bitbucket.org:vosen/funksvd.git
