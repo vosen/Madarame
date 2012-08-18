@@ -76,14 +76,14 @@
       <Project>{daf737e1-05b5-4189-a5aa-dac6233b64d7}</Project>
       <Private>True</Private>
     </ProjectReference>
+    <ProjectReference Include="..\..\funksvd.core\FunkSVD\FunkSVD.fsproj">
+      <Name>FunkSVD</Name>
+      <Project>{decb42be-1d4e-4bc5-bc64-02c3e167c02a}</Project>
+      <Private>True</Private>
+    </ProjectReference>
     <ProjectReference Include="..\..\NameCompletionProvider\NameCompletionProvider.fsproj">
       <Name>NameCompletionProvider</Name>
       <Project>{66720a62-c6c5-4a34-8bce-9cd54f438284}</Project>
-      <Private>True</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\..\SvdModel\TitleRecommender.fsproj">
-      <Name>TitleRecommender</Name>
-      <Project>{93db5509-c343-4350-b3f7-6f345797dbb6}</Project>
       <Private>True</Private>
     </ProjectReference>
     <Reference Include="zlib.net">

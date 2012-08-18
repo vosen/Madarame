@@ -15,6 +15,11 @@
     <add key="webpages:Version" value="1.0.0.0"/>
     <add key="ClientValidationEnabled" value="true"/>
     <add key="UnobtrusiveJavaScriptEnabled" value="true"/>
+    <add key="FeaturesPath" value="result-features" />
+    <add key="FeatureAveragesPath" value="result-feature-avgs" />
+    <add key="MovieAveragesPath" value="result-movie-avgs" />
+    <add key="TitleMappingPath" value="result-titles" />
+    <add key="DocumentMappingPath" value="result-docs" />
   </appSettings>
 
   <location path="api">

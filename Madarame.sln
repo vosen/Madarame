@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dapper", "dapper-dot-net\Da
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FunkSVD", "funksvd.core\FunkSVD\FunkSVD.fsproj", "{DECB42BE-1D4E-4BC5-BC64-02C3E167C02A}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Madarame.Tests", "Madarame.Tests\Madarame.Tests.fsproj", "{3D366E6F-5AD8-48DC-B1E9-B27A105A0B67}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +45,10 @@ Global
 		{DECB42BE-1D4E-4BC5-BC64-02C3E167C02A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DECB42BE-1D4E-4BC5-BC64-02C3E167C02A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DECB42BE-1D4E-4BC5-BC64-02C3E167C02A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D366E6F-5AD8-48DC-B1E9-B27A105A0B67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D366E6F-5AD8-48DC-B1E9-B27A105A0B67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D366E6F-5AD8-48DC-B1E9-B27A105A0B67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D366E6F-5AD8-48DC-B1E9-B27A105A0B67}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

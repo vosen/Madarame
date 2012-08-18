@@ -140,13 +140,13 @@
     <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\funksvd.core\FunkSVD\FunkSVD.fsproj">
+      <Project>{DECB42BE-1D4E-4BC5-BC64-02C3E167C02A}</Project>
+      <Name>FunkSVD</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\NameCompletionProvider\NameCompletionProvider.fsproj">
       <Project>{66720A62-C6C5-4A34-8BCE-9CD54F438284}</Project>
       <Name>NameCompletionProvider</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\SvdModel\TitleRecommender.fsproj">
-      <Project>{93DB5509-C343-4350-B3F7-6F345797DBB6}</Project>
-      <Name>TitleRecommender</Name>
     </ProjectReference>
     <ProjectReference Include="..\Backend\WebBackend.fsproj">
       <Project>{BC3AA913-16E1-40D5-922A-18B25E288D56}</Project>

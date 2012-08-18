@@ -6,12 +6,12 @@ open Npgsql
 open Dapper
 
 type Recommendations = { Masterpiece: string list; Great : string list; VeryGood : string list }
-type internal RecommendationsIds = { Masterpiece: int list; Great : int list; VeryGood : int list }
+type RecommendationsIds = { Masterpiece: int list; Great : int list; VeryGood : int list }
 type TitleQuery = { mutable id : int }
-type internal TitleResult = { mutable Title : string }
+type TitleResult = { mutable Title : string }
 
 [<HandleError>]
-type RecommendController(recommender : Vosen.Madarame.TitleRecommender, dbPath: string) =
+type RecommendController(recommender : Vosen.Juiz.FunkSVD.TitleRecommender, dbPath: string) =
     inherit Controller()
 
     member private this.UseConnection(func) =
@@ -19,7 +19,7 @@ type RecommendController(recommender : Vosen.Madarame.TitleRecommender, dbPath: 
         npgConn.Open()
         func(npgConn)
 
-    static member private PickRecommended scoreList =
+    static member public PickRecommended scoreList =
         let rec pick (scores : (int * float) array) idx rate10 rate9 rate8 =
             match idx with
             | _ when idx >= scores.Length -> { Masterpiece = rate10; Great = rate9; VeryGood = rate8 }
