@@ -75,3 +75,8 @@ small strong {
 .table-titles tr:last-child td {
     background: transparent !important;
 }
+
+/* ugly hack to remove background highlight when hovering over cell containing x/10 score */
+.table td:hover + td {
+    background: transparent !important;
+}
