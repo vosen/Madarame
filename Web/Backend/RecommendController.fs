@@ -1,14 +1,17 @@
 ﻿namespace MsdnWeb.Controllers
 
+open Microsoft.FSharp.Collections
 open System.Web
 open System.Web.Mvc
 open Npgsql
 open Dapper
 
-type Recommendations = { Masterpiece: string list; Great : string list; VeryGood : string list }
-type RecommendationsIds = { Masterpiece: int list; Great : int list; VeryGood : int list }
+type Recommendations = { Masterpiece: string array; Great : string array; VeryGood : string array }
+type RecommendationsIds = { Masterpiece: int array; Great : int array; VeryGood : int array }
 type TitleQuery = { mutable id : int }
 type TitleResult = { mutable Title : string }
+type pair<'a,'b> = System.Collections.Generic.KeyValuePair<'a, 'b>
+type ResizeArray<'a> = System.Collections.Generic.List<'a>
 
 [<HandleError>]
 type RecommendController(recommender : Vosen.Juiz.FunkSVD.TitleRecommender, dbPath: string) =
@@ -19,22 +22,32 @@ type RecommendController(recommender : Vosen.Juiz.FunkSVD.TitleRecommender, dbPa
         npgConn.Open()
         func(npgConn)
 
-    static member public PickRecommended scoreList =
-        let rec pick (scores : (int * float) array) idx rate10 rate9 rate8 =
-            match idx with
-            | _ when idx >= scores.Length -> { Masterpiece = rate10; Great = rate9; VeryGood = rate8 }
-            | _ -> 
-                match scores.[idx] with
-                | (id, over9) when (over9 >= 9.0) -> pick scores (idx+1) (id :: rate10) rate9 rate8
-                | (id, over8)  when (over8 >= 8.0) -> pick scores (idx+1) rate10 (id :: rate9) rate8
-                | (id, over7)  when (over7 >= 7.0) -> pick scores (idx+1) rate10 rate9 (id :: rate8)
-                | _ -> pick scores (idx+1) rate10 rate9 rate8
-        pick scoreList 0 [] [] []
+    static member public PickRecommended count (scoreList : pair<int,float> array) =
+        let rate10 = ResizeArray()
+        let rate9 = ResizeArray()
+        let rate8 = ResizeArray()
+        for kvp in scoreList do
+            if kvp.Value >= 9.5 then
+                rate10.Add(kvp)
+            else if kvp.Value >= 8.5 then
+                rate9.Add(kvp)
+            else if kvp.Value >= 8.0 then
+                rate8.Add(kvp)
+        let comparer = { new System.Collections.Generic.IComparer<pair<int,float>> with member this.Compare(x,y) = sign (y.Value - x.Value)}
+        rate10.Sort(comparer)
+        let fin10 = Array.init (min count rate10.Count) (fun i -> rate10.[i].Key)
+        if rate10.Count < count then
+            rate9.Sort(comparer)
+        let fin9 = Array.init (min (count - fin10.Length) rate9.Count) (fun i -> rate9.[i].Key)
+        if (rate10.Count + rate9.Count) < count then
+            rate8.Sort(comparer)
+        let fin8 = Array.init (min (count - fin10.Length - fin9.Length) rate8.Count) (fun i -> rate8.[i].Key)
+        { Masterpiece = fin10; Great = fin9; VeryGood = fin8}
 
     member private this.ResolveRecommendedTitles (recids : RecommendationsIds) : Recommendations  =
-        let mapToNames (ids : int list) =
+        let mapToNames ids =
             ids
-            |> List.map (fun id ->
+            |> Array.map (fun id ->
                 (this.UseConnection(fun conn -> conn.Query<TitleResult>("SELECT \"RomajiName\" AS \"Title\" FROM \"Anime\" WHERE \"Id\" = :id", { id = id }))
                 |> Seq.head).Title)
         { Masterpiece = (mapToNames recids.Masterpiece); Great = (mapToNames recids.Great); VeryGood = (mapToNames recids.VeryGood) }
@@ -56,8 +69,8 @@ type RecommendController(recommender : Vosen.Juiz.FunkSVD.TitleRecommender, dbPa
                            | s when Seq.isEmpty s -> None
                            | s ->
                                 let first = Seq.head s
-                                Some(first.id, rating)
-                    | _ -> Some(id, rating))
+                                Some(pair(first.id, rating))
+                    | _ -> Some(pair(id, rating)))
         
         match correctRatings with
         | empty when empty = null -> this.View()
@@ -65,7 +78,7 @@ type RecommendController(recommender : Vosen.Juiz.FunkSVD.TitleRecommender, dbPa
             let predictions = 
                 correctRatings
                 |> recommender.PredictUnknown
-                |> RecommendController.PickRecommended
+                |> RecommendController.PickRecommended 50
                 |> this.ResolveRecommendedTitles
             this.View(predictions)
 
