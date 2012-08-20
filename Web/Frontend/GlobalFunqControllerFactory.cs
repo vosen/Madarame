@@ -20,14 +20,34 @@ namespace Web
             this.funqBuilder = new ContainerResolveCache(container);
             
             // Also register all the controller types as transient
-            var controllerTypes = 
+            var controllerTypes =
                 AppDomain.CurrentDomain
                     .GetAssemblies()
-                    .SelectMany(ass => ass.GetTypes())
-                    .Where(type => typeof(IController).IsAssignableFrom(type))
+                    .SelectMany(ass =>
+                    {
+                        try
+                        {
+                            return ass.GetTypes();
+                        }
+                        catch (ReflectionTypeLoadException ex)
+                        {
+                            return ex.Types.Where(t => t != null);
+                        }
+                    })
+                    .Where(type =>
+                    {
+                        try
+                        {
+                            return typeof(IController).IsAssignableFrom(type);
+                        }
+                        catch (TypeLoadException ex)
+                        {
+                            return false;
+                        }
+                    })
                     .ToList();
 
-            container.RegisterAutoWiredTypes(controllerTypes);
+            container.RegisterAutoWiredTypes(controllerTypes, ReuseScope.None);
         }
 
         protected override IController GetControllerInstance(

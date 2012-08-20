@@ -1,0 +1,14 @@
+﻿@model Tuple<int, string[]>
+
+@if (Model.Item2.Length > 0) {
+    <table class="table table-condensed table-titles rated@(Model.Item1)">
+        <tr>
+            <td rowspan=@(Model.Item2.Length+1)><h1 class="rating">@Model.Item1/10</h1></td>
+            <td><span>@Model.Item2[0]</span></td>
+        </tr>
+        @for(int i =1; i< Model.Item2.Length; i++) {
+            <tr><td>@Model.Item2[i]</td></tr>
+        }
+        <tr><td>&nbsp;</td></tr>
+    </table>
+}

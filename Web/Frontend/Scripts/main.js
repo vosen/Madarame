@@ -1,6 +1,6 @@
 $(document).ready(function () {
     var row_counter = 0;
-    var title_row = '<tr><td><input class="input typeahead" name="title" type="text" data-provide="typeahead"><input name="id" type="hidden"></td><td><select name="rating"><option>10</option><option>2</option><option>3</option><option>4</option><option>5</option></select></td><td><button class="btn btn-danger button-del disabled" disabled="disabled"><i class="icon-white icon-minus"></i></button></td></tr>';
+    var title_row = '<tr><td><input class="input typeahead" name="title" type="text" data-provide="typeahead"><input name="id" type="hidden"></td><td><select name="rating"><option>10</option><option>9</option><option>8</option><option>7</option><option>6</option><option>5</option><option>4</option><option>3</option><option>2</option><option>1</option></select></td><td><button class="btn btn-danger button-del disabled" disabled="disabled"><i class="icon-white icon-minus"></i></button></td></tr>';
     var typeahead_handler = {
         source: function (typeahead, query) {
             $.ajax({

@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="@Url.Content("~/Content/list.css")" type="text/css"/>
     <link href='http://fonts.googleapis.com/css?family=Lato:700' rel='stylesheet' type='text/css'>
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
-    <title>Untitled 2</title>
+    <title>Your recommended anime</title>
 </head>
 <body style="height:100%">
     <div style="margin-top:20px" class="container">
@@ -25,24 +25,9 @@
             </h2>
         </div>
         <div class="span10" >
-            <table class="table table-condensed table-titles rated10">
-            <tr><td rowspan=4><h1 class="rating">10/10</h1></td><td><span>title 10</span></td></tr>
-                            <tr><td>title 20</td></tr>
-                            <tr><td>title 30</td></tr>
-                            <tr><td>&nbsp;</td></tr>
-            </table>
-            <table class="table table-condensed table-titles rated9">
-            <tr><td rowspan=4><h1 class="rating">9/10</h1></td><td><span>title 10</span></td></tr>
-                            <tr><td>title 20</td></tr>
-                            <tr><td>title 30</td></tr>
-                            <tr><td>&nbsp;</td></tr>
-            </table>
-            <table class="table table-condensed table-titles rated8">
-            <tr><td rowspan=4><h1 class="rating">8/10</h1></td><td><span>title 10</span></td></tr>
-                            <tr><td>title 20</td></tr>
-                            <tr><td>title 30</td></tr>
-                            <tr><td>&nbsp;</td></tr>
-            </table>
+            @Html.Partial("RatingListControl", Tuple.Create(10, Model.Masterpiece))
+            @Html.Partial("RatingListControl", Tuple.Create(9, Model.Great))
+            @Html.Partial("RatingListControl", Tuple.Create(8, Model.VeryGood))
         </div>
     </div>
     </div>
