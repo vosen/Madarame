@@ -10,7 +10,7 @@
         System.IO.Path.Combine(appData, System.Web.Configuration.WebConfigurationManager.AppSettings["MovieAveragesPath"]),
         System.IO.Path.Combine(appData, System.Web.Configuration.WebConfigurationManager.AppSettings["TitleMappingPath"]),
         System.IO.Path.Combine(appData, System.Web.Configuration.WebConfigurationManager.AppSettings["DocumentMappingPath"]));
-      string dbPath = System.Web.Configuration.WebConfigurationManager.ConnectionStrings[0].ConnectionString;
+      string dbPath = System.Web.Configuration.WebConfigurationManager .ConnectionStrings["movie-titles"].ConnectionString;
       var container = Web.CompletionHost.Start();
       ControllerBuilder.Current.SetControllerFactory(new Web.GlobalFunqControllerFactory(container));
       container.Register(cont => new MsdnWeb.Controllers.RecommendController(recommender, dbPath)).ReusedWithin(Funq.ReuseScope.None);
