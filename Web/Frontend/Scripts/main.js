@@ -4,7 +4,7 @@ $(document).ready(function () {
     var typeahead_handler = {
         source: function (typeahead, query) {
             $.ajax({
-                url: "/api/json/asynconeway/SearchQuery",
+                url: "api/json/asynconeway/SearchQuery",
                 data: { term: query },
                 success: function (data) {
                     typeahead.process(data)

@@ -7,13 +7,13 @@ module RouteCollectionExtensions =
 
     type RouteCollection with
 
-        member routes.MapRoute(url : string, defaults : IDictionary<string, obj>) =
-            let route = System.Web.Mvc.RouteCollectionExtensions.MapRoute(routes, null, url)
+        member routes.MapRoute(name : string, url : string, defaults : IDictionary<string, obj>) =
+            let route = System.Web.Mvc.RouteCollectionExtensions.MapRoute(routes, name, url)
             route.Defaults <- RouteValueDictionary(defaults)
             route
 
-        member routes.MapRoute(url : string, defaults : IDictionary<string, obj>, constraints : IDictionary<string, obj>) =
-            let route = System.Web.Mvc.RouteCollectionExtensions.MapRoute(routes, null, url)
+        member routes.MapRoute(name : string, url : string, defaults : IDictionary<string, obj>, constraints : IDictionary<string, obj>) =
+            let route = System.Web.Mvc.RouteCollectionExtensions.MapRoute(routes, name, url)
             route.Defaults <- RouteValueDictionary(defaults)
             route.Constraints <- RouteValueDictionary(constraints)
             route

@@ -52,6 +52,10 @@ type RecommendController(recommender : Vosen.Juiz.FunkSVD.TitleRecommender, dbPa
                 |> Seq.head).Title)
         { Masterpiece = (mapToNames recids.Masterpiece); Great = (mapToNames recids.Great); VeryGood = (mapToNames recids.VeryGood) }
 
+    [<AcceptVerbs(HttpVerbs.Get)>]
+    member this.FromList() =
+        this.RedirectToRoute("Home")
+
     [<AcceptVerbs(HttpVerbs.Post)>]
     member this.FromList(title : string[], id : int[], rating : int[]) =
         let correctRatings =
