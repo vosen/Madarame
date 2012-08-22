@@ -69,6 +69,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\ServiceStack.Common.3.9.5\lib\net35\ServiceStack.Interfaces.dll</HintPath>
     </Reference>
+    <Reference Include="ServiceStack.Logging.Elmah">
+      <HintPath>..\..\packages\ServiceStack.Logging.Elmah.1.0.3.0\lib\net35\ServiceStack.Logging.Elmah.dll</HintPath>
+    </Reference>
     <Reference Include="ServiceStack.OrmLite">
       <HintPath>..\..\packages\ServiceStack.OrmLite.SqlServer.3.9.5\lib\ServiceStack.OrmLite.dll</HintPath>
     </Reference>

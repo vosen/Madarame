@@ -9,6 +9,9 @@ using ServiceStack.ServiceHost;
 using System.Web.Routing;
 using System.Web.Mvc;
 using Funq;
+using ServiceStack.Logging;
+using ServiceStack.Logging.Elmah;
+using ServiceStack.Logging.Support.Logging;
 
 namespace Web
 {
@@ -25,6 +28,7 @@ namespace Web
         {
             string connString = ConfigurationManager.ConnectionStrings[0].ConnectionString;
             container.Register(c => new NameCompletion.Service(connString));
+            LogManager.LogFactory = new ElmahLogFactory(new NullLogFactory());
 #if !DEBUG
             SetConfig(new EndpointHostConfig()
             {
