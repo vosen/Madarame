@@ -39,9 +39,24 @@ $(document).ready(function () {
         if (row_counter > 1) {
             $('#title-list .button-del').removeClass('disabled').removeAttr('disabled');
         }
-        if(event !== undefined)
+        if (event !== undefined)
             event.preventDefault();
     };
     add_handler();
     $('.button-add').click(add_handler);
+    // jscript for rec list
+    var title_add_button = '<button class="btn btn-success button-seen"><i class="icon-white icon-plus"></i> Seen it</button>';
+    var title_del_float = '<span class="float-seen-del"><input class="input" name="title" type="hidden"><input name="id" type="hidden"></td><td><select name="rating"><option>10</option><option>9</option><option>8</option><option>7</option><option>6</option><option>5</option><option>4</option><option>3</option><option>2</option><option>1</option></select></td><td><button class="btn btn-danger"><i class="icon-white icon-minus"></i></button></td></tr></span>';
+    var replace_rating_with_seen = function (event) {
+        var add_float = $(title_add_button);
+        add_float.click(replace_seen_with_rating);
+        $(event.target).parent('span').replaceWith(add_float);
+    };
+    var replace_seen_with_rating = function (event) {
+        var del_float = $(title_del_float);
+        del_float.find('button').click(replace_rating_with_seen);
+        $(event.target).replaceWith(del_float);
+    };
+    $('.table-titles td span').append(title_add_button);
+    $('.button-seen').click(replace_seen_with_rating);
 });

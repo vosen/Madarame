@@ -80,3 +80,45 @@ small strong {
 .table td:hover + td {
     background: transparent !important;
 }
+
+.table-titles tr:first-child td:last-child .button-seen {
+    margin-right: 5px;
+}
+
+.button-seen {
+    float:right;
+    padding:0px 10px;
+}
+
+.titles-editable td {
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+.titles-editable tr:first-child td {
+    padding-bottom: 3px;
+}
+
+.titles-editable tr:first-child td span {
+    padding-top: 3px;
+}
+
+.titles-editable select {
+    width: auto;
+}
+
+.float-seen-del {
+    float: right;
+}
+
+.float-seen-del select {
+    padding: 0px;
+    margin: 0px;
+    height: auto;
+}
+
+.float-seen-del button {
+    padding-top: 0px;
+    padding-bottom:0px;
+    margin-left: 4px;
+}

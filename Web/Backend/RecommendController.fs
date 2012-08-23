@@ -6,6 +6,7 @@ open System.Web.Mvc
 open Npgsql
 open Dapper
 
+type RecommendationSet= { Titles : string[]; Rating: int; Editable: bool }
 type Recommendations = { Masterpiece: string array; Great : string array; VeryGood : string array }
 type RecommendationsIds = { Masterpiece: int array; Great : int array; VeryGood : int array }
 type TitleQuery = { mutable id : int }

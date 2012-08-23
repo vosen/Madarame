@@ -7,6 +7,7 @@
 <head>
     <script src="@Url.Content("~/Scripts/jquery-1.7.2.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/Scripts/bootstrap-typeahead.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/main.js")" type="text/javascript"></script>
     <link rel="stylesheet" href="@Url.Content("~/Content/bootstrap.css")" type="text/css"/>
     <link rel="stylesheet" href="@Url.Content("~/Content/bootstrap-responsive.css")" type="text/css"/>
     <link rel="stylesheet" href="@Url.Content("~/Content/list.css")" type="text/css"/>
@@ -25,9 +26,9 @@
             </h2>
         </div>
         <div class="span10" >
-            @Html.Partial("RatingListControl", Tuple.Create(10, Model.Masterpiece))
-            @Html.Partial("RatingListControl", Tuple.Create(9, Model.Great))
-            @Html.Partial("RatingListControl", Tuple.Create(8, Model.VeryGood))
+            @Html.Partial("RatingListControl", new MsdnWeb.Controllers.RecommendationSet(Model.Masterpiece, 10, true))
+            @Html.Partial("RatingListControl", new MsdnWeb.Controllers.RecommendationSet(Model.Great, 9, true))
+            @Html.Partial("RatingListControl", new MsdnWeb.Controllers.RecommendationSet(Model.VeryGood, 8, true))
         </div>
     </div>
     </div>
