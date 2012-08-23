@@ -3,6 +3,7 @@
 
   protected void Application_Start(Object sender, EventArgs e)
   {
+      MvcHandler.DisableMvcResponseHeader = true;
       string appData = Server.MapPath("~/App_Data/");
       var recommender = Vosen.Juiz.FunkSVD.TitleRecommender.Load(
         System.IO.Path.Combine(appData, System.Web.Configuration.WebConfigurationManager.AppSettings["FeaturesPath"]),
