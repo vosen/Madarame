@@ -50,12 +50,12 @@ $(document).ready(function () {
     var replace_rating_with_seen = function (event) {
         var add_float = $(title_add_button);
         add_float.click(replace_seen_with_rating);
-        $(event.target).parent('span').replaceWith(add_float);
+        $(event.currentTarget).parent('span').replaceWith(add_float);
     };
     var replace_seen_with_rating = function (event) {
         var del_float = $(title_del_float);
         del_float.find('button').click(replace_rating_with_seen);
-        $(event.target).replaceWith(del_float);
+        $(event.currentTarget).replaceWith(del_float);
     };
     $('.table-titles td span').append(title_add_button);
     $('.button-seen').click(replace_seen_with_rating);

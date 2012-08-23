@@ -31,7 +31,7 @@ small strong {
 }
 
 
-.table-titles tr:first-child td span {
+.table-titles tr:first-child td > span {
     border-top: 1px solid #dddddd;
     display: inline-block;
     height: 100%;
@@ -115,6 +115,11 @@ small strong {
     padding: 0px;
     margin: 0px;
     height: auto;
+}
+
+.titles-editable tr:first-child td .float-seen-del {
+    margin-right: 5px;
+    padding-top:0px;
 }
 
 .float-seen-del button {
