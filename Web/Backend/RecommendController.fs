@@ -7,9 +7,9 @@ open Npgsql
 open Dapper
 
 type pair<'a,'b> = System.Collections.Generic.KeyValuePair<'a, 'b>
-type RecommendationSet= { Titles : string[]; Rating: int; Editable: bool }
+type RecommendationSet= { Titles : pair<int,string> array; Rating: int; Editable: bool }
 type Recommendations<'a> = { Masterpiece: 'a array; Great : 'a array; VeryGood : 'a array }
-type RecommendationsWithKnown<'a> = { Recommendations: Recommendations<'a>; Known : pair<string, pair<int,int>> array }
+type RecommendationsWithKnown = { Recommendations: Recommendations<pair<int,string>>; Known : pair<string, pair<int,int>> array }
 type TitleQuery = { mutable id : int }
 type TitleResult = { mutable Title : string }
 type ResizeArray<'a> = System.Collections.Generic.List<'a>
@@ -80,7 +80,9 @@ type RecommendController(recommender : Vosen.Juiz.FunkSVD.TitleRecommender, dbPa
             correctRatings
             |> recommender.PredictUnknown
             |> RecommendController.PickRecommended 50
-        let recTitles = { Masterpiece = recs.Masterpiece |> Array.map this.ResolveTitleName;  Great = recs.Great |> Array.map this.ResolveTitleName; VeryGood = recs.VeryGood |> Array.map this.ResolveTitleName }
+        let addTitleToId (ids : int array) =
+            ids |> Array.map (fun id -> pair(id, this.ResolveTitleName id))
+        let recTitles = { Masterpiece = addTitleToId recs.Masterpiece;  Great = addTitleToId recs.Great; VeryGood = addTitleToId recs.VeryGood }
         let known = correctRatings |> Array.map (fun kvp -> pair(this.ResolveTitleName kvp.Key, pair(kvp.Key, kvp.Value)))
         this.View({ Recommendations = recTitles; Known = known })
 
