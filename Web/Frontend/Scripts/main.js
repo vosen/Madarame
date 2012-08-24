@@ -35,7 +35,7 @@ $(document).ready(function () {
         $title_row.find('.typeahead').val(name);
         $title_row.find('input[type="hidden"]').val(id);
         $title_row.find('select').val(rating);
-        title_body.append(title_row);
+        title_body.append($title_row);
         var typeahead = title_body.find('tr:last .typeahead').typeahead(typeahead_handler);
         $('.typeahead').on('change', function () {
             $(this).siblings().val(undefined);

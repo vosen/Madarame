@@ -1,7 +1,4 @@
-﻿@model MsdnWeb.Controllers.Recommendations
-@{
-    Layout = null;
-}
+﻿@model MsdnWeb.Controllers.RecommendationsWithKnown<string>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,9 +12,18 @@
     <link href='http://fonts.googleapis.com/css?family=Lato:700' rel='stylesheet' type='text/css'>
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
     <title>Your recommended anime</title>
+    <script>
+        $(document).ready(function () {
+            @{foreach (var known in Model.Known) {
+                this.WriteLiteral(String.Format("add_rating_row('{0}', {1}, {2});\n", known.Key, known.Value.Key, known.Value.Value));
+            }}
+        });
+    </script>
 </head>
 <body style="height:100%">
     <div style="margin-top:20px" class="container">
+    @using (Html.BeginForm("FromList", "Recommend", FormMethod.Post))
+    {
     <div class="row">
         <div class="span2">
             <h2><small><strong>Rerate</strong> your shows.</small></h2>
@@ -30,7 +36,7 @@
     </div>
     <div class="row">
         <div class="span2">
-            <h2><small>Generate <strong>new</strong> recommendations.</small></h2>
+            <h2><small>Generate <strong>new</strong> ranking.</small></h2>
         </div>
         <div class="span10">
             <div class="well">
@@ -42,16 +48,17 @@
         <div class="span2">
             <h2>
             <small>
-                These shows have been picked to fit <strong>your taste</strong>. Watch them or refine your selection and <strong>generate recommendations again</strong>.
+                These shows have been picked to fit <strong>your taste</strong>. Watch them or refine your selection and <strong>generate ranking again</strong>.
             </small>
             </h2>
         </div>
         <div class="span10" >
-            @Html.Partial("RatingListControl", new MsdnWeb.Controllers.RecommendationSet(Model.Masterpiece, 10, true))
-            @Html.Partial("RatingListControl", new MsdnWeb.Controllers.RecommendationSet(Model.Great, 9, true))
-            @Html.Partial("RatingListControl", new MsdnWeb.Controllers.RecommendationSet(Model.VeryGood, 8, true))
+            @Html.Partial("RatingListControl", new MsdnWeb.Controllers.RecommendationSet(Model.Recommendations.Masterpiece, 10, true))
+            @Html.Partial("RatingListControl", new MsdnWeb.Controllers.RecommendationSet(Model.Recommendations.Great, 9, true))
+            @Html.Partial("RatingListControl", new MsdnWeb.Controllers.RecommendationSet(Model.Recommendations.VeryGood, 8, true))
         </div>
     </div>
+    }
     </div>
 </body>
 </html>

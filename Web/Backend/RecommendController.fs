@@ -6,12 +6,12 @@ open System.Web.Mvc
 open Npgsql
 open Dapper
 
+type pair<'a,'b> = System.Collections.Generic.KeyValuePair<'a, 'b>
 type RecommendationSet= { Titles : string[]; Rating: int; Editable: bool }
-type Recommendations = { Masterpiece: string array; Great : string array; VeryGood : string array }
-type RecommendationsIds = { Masterpiece: int array; Great : int array; VeryGood : int array }
+type Recommendations<'a> = { Masterpiece: 'a array; Great : 'a array; VeryGood : 'a array }
+type RecommendationsWithKnown<'a> = { Recommendations: Recommendations<'a>; Known : pair<string, pair<int,int>> array }
 type TitleQuery = { mutable id : int }
 type TitleResult = { mutable Title : string }
-type pair<'a,'b> = System.Collections.Generic.KeyValuePair<'a, 'b>
 type ResizeArray<'a> = System.Collections.Generic.List<'a>
 
 [<HandleError>]
@@ -45,13 +45,8 @@ type RecommendController(recommender : Vosen.Juiz.FunkSVD.TitleRecommender, dbPa
         let fin8 = Array.init (min (count - fin10.Length - fin9.Length) rate8.Count) (fun i -> rate8.[i].Key)
         { Masterpiece = fin10; Great = fin9; VeryGood = fin8}
 
-    member private this.ResolveRecommendedTitles (recids : RecommendationsIds) : Recommendations  =
-        let mapToNames ids =
-            ids
-            |> Array.map (fun id ->
-                (this.UseConnection(fun conn -> conn.Query<TitleResult>("SELECT \"RomajiName\" AS \"Title\" FROM \"Anime\" WHERE \"Id\" = :id", { id = id }))
-                |> Seq.head).Title)
-        { Masterpiece = (mapToNames recids.Masterpiece); Great = (mapToNames recids.Great); VeryGood = (mapToNames recids.VeryGood) }
+    member private this.ResolveTitleName id =
+        this.UseConnection(fun conn -> conn.Query<string>("SELECT COALESCE(\"EnglishName\", \"RomajiName\") FROM \"Anime\" WHERE \"Id\" = :id", { id = id }) |> Seq.head)
 
     [<AcceptVerbs(HttpVerbs.Get)>]
     member this.FromList() =
@@ -63,30 +58,33 @@ type RecommendController(recommender : Vosen.Juiz.FunkSVD.TitleRecommender, dbPa
             match (title, id, rating) with
             | (null, _, _)
             | (_, null, _)
-            | (_, _, null) -> null
-            | _ -> 
+            | (_, _, null) -> Array.empty
+            | _ ->
+                // TODO: if lengths are different try to salvage something from this.
                 Array.zip3 id rating title
                 |> Array.choose(fun (id, rating, title) -> 
-                    match id with
+                    match (id, title) with
                     | _ when (id <= 0 || id >= recommender.TitlesCount) ->
-                        Vosen.Madarame.NameCompletion.Complete this.UseConnection 1 title 
-                        |> function 
-                           | s when Seq.isEmpty s -> None
-                           | s ->
-                                let first = Seq.head s
-                                Some(pair(first.id, rating))
+                        if System.String.IsNullOrWhiteSpace(title) then
+                            None
+                        else
+                            Vosen.Madarame.NameCompletion.Complete this.UseConnection 1 title 
+                            |> function 
+                               | s when Seq.isEmpty s -> None
+                               | s ->
+                                    let first = Seq.head s
+                                    Some(pair(first.id, rating))
                     | _ -> Some(pair(id, rating)))
-        
-        match correctRatings with
-        | empty when empty = null -> this.View()
-        | _ ->
-            let predictions = 
-                correctRatings
-                |> recommender.PredictUnknown
-                |> RecommendController.PickRecommended 50
-                |> this.ResolveRecommendedTitles
-            this.View(predictions)
+
+        let recs = 
+            correctRatings
+            |> recommender.PredictUnknown
+            |> RecommendController.PickRecommended 50
+        let recTitles = { Masterpiece = recs.Masterpiece |> Array.map this.ResolveTitleName;  Great = recs.Great |> Array.map this.ResolveTitleName; VeryGood = recs.VeryGood |> Array.map this.ResolveTitleName }
+        let known = correctRatings |> Array.map (fun kvp -> pair(this.ResolveTitleName kvp.Key, pair(kvp.Key, kvp.Value)))
+        this.View({ Recommendations = recTitles; Known = known })
 
     member this.FromMAL(login : string) =
+
         this.View(box null)
  
