@@ -28,9 +28,9 @@ type RecommendController(recommender : Vosen.Juiz.FunkSVD.TitleRecommender, dbPa
         let rate9 = ResizeArray()
         let rate8 = ResizeArray()
         for kvp in scoreList do
-            if kvp.Value >= 9.5 then
+            if kvp.Value >= 9.33 then
                 rate10.Add(kvp)
-            else if kvp.Value >= 8.5 then
+            else if kvp.Value >= 8.67 then
                 rate9.Add(kvp)
             else if kvp.Value >= 8.0 then
                 rate8.Add(kvp)

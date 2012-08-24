@@ -15,7 +15,7 @@
     <script>
         $(document).ready(function () {
             @{foreach (var known in Model.Known) {
-                this.WriteLiteral(String.Format("add_rating_row('{0}', {1}, {2});\n", known.Key, known.Value.Key, known.Value.Value));
+                this.WriteLiteral(String.Format("add_rating_row(\"{0}\", {1}, {2});\n", known.Key, known.Value.Key, known.Value.Value));
             }}
         });
     </script>
