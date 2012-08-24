@@ -13,16 +13,17 @@
     <link href='http://fonts.googleapis.com/css?family=Lato:700' rel='stylesheet' type='text/css'>
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
     <title>Instant Anime Recommendations</title>
+    <script>
+        $(document).ready(function () { add_rating_row('', 0, 10); });
+    </script>
 </head>
 <body>
     <div style="margin-top:20px" class="container">
     <div class="row">
         <div class="span2">
             <h3>&nbsp;</h3>
-            <h2>
-            <small>
-                Welcome to <strong>Instant Anime Rec</strong>. Choose ranking method.
-            </small>
+            <h2 class="sidebar">
+                <small>Welcome to <strong>Instant Anime Rec</strong>. Choose ranking method.</small>
             </h2>
         </div>
         <div class="span10">
@@ -30,28 +31,17 @@
                 <div class="span4">
                     <h3>Rate anime you have seen</h3>
                     @using (Html.BeginForm("FromList", "Recommend", FormMethod.Post)) {
-                    <div style="padding-bottom:0px;" class="well">
-                        <div>
-                            <table border="0" cellpadding="0" id="title-list">
-                            <tbody></tbody>
-                            <tfoot>
-                            <tr>
-                                <td colspan="3">
-                                    <button class="btn btn-success button-add"><i class="icon-white icon-plus"></i> Add</button>
-                                </td>
-                            </tr>
-                            </tfoot>
-                            </table>
+                        <div style="padding-bottom:9px; margin-bottom:10px;" class="well">
+                            @Html.Partial("RatingPickerControl")
                         </div>
-                    </div>
-                    <div class="well">
-                        <button style="width:100%" class="btn btn-primary" type="submit"><i class="icon-white icon-search"></i> Recommend</button>
-                    </div>
+                        <div style="padding-top:9px;" class="well">
+                            @Html.Partial("RecommendButton")
+                        </div>
                     }
                 </div>
                 <div style="vertical-align:middle;" class="span2">
                 <h3>&nbsp;</h3>
-                    <h1>
+                    <h1 id="huge">
                         OR
                     </h1>
                 </div>

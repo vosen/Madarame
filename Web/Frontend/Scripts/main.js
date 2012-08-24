@@ -60,7 +60,6 @@ $(document).ready(function () {
         if (event !== undefined)
             event.preventDefault();
     };
-    add_rating_row('', 0, 10);
     $('.button-add').click(function (event) {
         add_rating_row('', 0, 10);
         event.preventDefault();
