@@ -19,6 +19,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FunkSVD", "funksvd.core\Fun
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Madarame.Tests", "Madarame.Tests\Madarame.Tests.fsproj", "{3D366E6F-5AD8-48DC-B1E9-B27A105A0B67}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MAL.Content", "funksvd.core\MAL.Content\MAL.Content.csproj", "{0AF0124F-6948-482C-BFCB-6097BD8291FC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +51,10 @@ Global
 		{3D366E6F-5AD8-48DC-B1E9-B27A105A0B67}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D366E6F-5AD8-48DC-B1E9-B27A105A0B67}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3D366E6F-5AD8-48DC-B1E9-B27A105A0B67}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0AF0124F-6948-482C-BFCB-6097BD8291FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AF0124F-6948-482C-BFCB-6097BD8291FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0AF0124F-6948-482C-BFCB-6097BD8291FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AF0124F-6948-482C-BFCB-6097BD8291FC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
