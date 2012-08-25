@@ -86,7 +86,7 @@ type RecommendController(recommender : Vosen.Juiz.FunkSVD.TitleRecommender, dbPa
         let known = correctRatings |> Array.map (fun kvp -> pair(this.ResolveTitleName kvp.Key, pair(kvp.Key, kvp.Value)))
         this.View({ Recommendations = recTitles; Known = known })
 
+    [<AcceptVerbs(HttpVerbs.Post)>]
     member this.FromMAL(login : string) =
-
         this.View(box null)
  

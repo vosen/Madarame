@@ -17,7 +17,7 @@ type Global() =
                         "recommend/list",
                         dict [ "controller" => "Recommend"; "action" => "FromList" ]) |> ignore
         routes.MapRoute(null,
-                        "recommend/mal/{login}",
+                        "recommend/mal",
                         dict [ "controller" => "Recommend"; "action" => "FromMAL" ]) |> ignore
         routes.MapRoute("Home",
                         "",

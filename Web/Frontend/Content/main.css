@@ -26,10 +26,13 @@ h3, h2, h1 {
     width: 100%;
 }
 
-#title-list input {
-    width:100%;
+input {
     box-shadow:none !important;
     border-color:#BBBBBB !important;
+    width:100% !important;
+}
+
+#title-list input {
 }
 
 #title-list select {
@@ -67,4 +70,8 @@ input,select,textarea{
 
 .button-add {
     margin-bottom: 0px !important;
+}
+
+.btn-primary {
+    width: 100%;
 }
