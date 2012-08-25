@@ -28,3 +28,22 @@ type WebBackend() =
         picked.Great |> should contain 20
         picked.Masterpiece |> should haveLength 1
         picked.Masterpiece |> should contain 2
+
+    [<Test>]
+    member this.``MAL recommendation correctly parses full URL``() =
+        let address1 = "http://myanimelist.net/profile/askanier"
+        let address2 = "http://www.myanimelist.net/profile/askanier"
+        MsdnWeb.Controllers.RecommendController.LoginFromInput address1 |> should equal (Some("askanier"))
+        MsdnWeb.Controllers.RecommendController.LoginFromInput address2 |> should equal (Some("askanier"))
+
+    [<Test>]
+    member this.``MAL recommendation correctly parses short URL``() =
+        let address1 = "myanimelist.net/profile/askanier"
+        let address2 = "www.myanimelist.net/profile/askanier"
+        MsdnWeb.Controllers.RecommendController.LoginFromInput address1 |> should equal (Some("askanier"))
+        MsdnWeb.Controllers.RecommendController.LoginFromInput address2 |> should equal (Some("askanier"))
+
+    [<Test>]
+    member this.``MAL recommendation correctly parses just login``() =
+        let address1 = "askanier"
+        MsdnWeb.Controllers.RecommendController.LoginFromInput address1 |> should equal (Some("askanier"))
