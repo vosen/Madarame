@@ -81,6 +81,11 @@
       <Project>{decb42be-1d4e-4bc5-bc64-02c3e167c02a}</Project>
       <Private>True</Private>
     </ProjectReference>
+    <ProjectReference Include="..\..\funksvd.core\MAL.Content\MAL.Content.csproj">
+      <Name>MAL.Content</Name>
+      <Project>{0af0124f-6948-482c-bfcb-6097bd8291fc}</Project>
+      <Private>True</Private>
+    </ProjectReference>
     <ProjectReference Include="..\..\NameCompletionProvider\NameCompletionProvider.fsproj">
       <Name>NameCompletionProvider</Name>
       <Project>{66720a62-c6c5-4a34-8bce-9cd54f438284}</Project>

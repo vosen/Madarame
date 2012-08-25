@@ -1,5 +1,6 @@
 ﻿namespace MsdnWeb.Controllers
 
+open Vosen.MAL.Content
 open Microsoft.FSharp.Collections
 open System.Web
 open System.Web.Mvc
@@ -115,4 +116,28 @@ type RecommendController(recommender : Vosen.Juiz.FunkSVD.TitleRecommender, dbPa
 
     [<AcceptVerbs(HttpVerbs.Post)>]
     member this.FromMAL(login : string) =
-        this.View(None)
+        let result =
+            match (RecommendController.LoginFromInput login) with
+            | None -> None
+            | Some(correct) -> 
+                let result = Vosen.MAL.Content.Extract.DownloadAllAnime(correct)
+                match result.Response with
+                | AnimelistResponse.Successs -> 
+                    let rated = ResizeArray()
+                    let seen = System.Collections.Generic.HashSet()
+                    for rating in result.Ratings do
+                        if rating.Rating > 0uy then
+                            rated.Add(pair(rating.AnimeId, int(rating.Rating)))
+                        else
+                            seen.Add(rating.AnimeId) |> ignore
+                    let recommendedIds = 
+                        rated.ToArray()
+                        |> recommender.PredictUnknown
+                        |> Array.filter (fun pair -> not (seen.Contains(pair.Key)))
+                        |> RecommendController.PickRecommended 50
+                    let resolveTitles ids =
+                        ids |> Array.map this.ResolveTitleName
+                    let recommendedTitles = { Masterpiece = resolveTitles recommendedIds.Masterpiece ; Great = resolveTitles recommendedIds.Great; VeryGood = resolveTitles recommendedIds.VeryGood }
+                    Some(Some(recommendedTitles), correct)
+                | _ -> Some(None, correct)
+        this.View(result)

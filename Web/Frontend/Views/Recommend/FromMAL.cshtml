@@ -1,11 +1,10 @@
 ﻿@using Microsoft.FSharp.Core
-@model FSharpOption<Tuple<MsdnWeb.Controllers.Recommendations<string>, string>>
+@model FSharpOption<Tuple<FSharpOption<MsdnWeb.Controllers.Recommendations<string>>, string>>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <script src="@Url.Content("~/Scripts/jquery-1.7.2.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/Scripts/bootstrap-typeahead.js")" type="text/javascript"></script>
-    <script src="@Url.Content("~/Scripts/main.js")" type="text/javascript"></script>
     <link rel="stylesheet" href="@Url.Content("~/Content/bootstrap.css")" type="text/css"/>
     <link rel="stylesheet" href="@Url.Content("~/Content/bootstrap-responsive.css")" type="text/css"/>
     <link rel="stylesheet" href="@Url.Content("~/Content/main.css")" type="text/css"/>
@@ -13,6 +12,14 @@
     <link href='http://fonts.googleapis.com/css?family=Lato:700' rel='stylesheet' type='text/css'>
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
     <title>Your recommended anime</title>
+    @if (OptionModule.IsSome(Model))
+    {
+        <script>
+            $(document).ready(function () {
+                $('input[name=login]').val("@Model.Value.Item2");
+            });
+        </script>
+    }
 </head>
 <body style="height:100%">
     <div style="margin-top:20px" class="container">
@@ -20,7 +27,7 @@
         {
             <div class="row">
                 <div class="span2">
-                    <h2><small><strong>Get shows for </strong>another profile</h2>
+                    <h2><small><strong>Get shows for </strong>another profile</small></h2>
                 </div>
                 <div class="span10">
                     <div class="well">
@@ -40,13 +47,29 @@
             </div>
         }
         <div class="row">
-        @if (OptionModule.IsNone(Model))
-        {
-            @Html.Partial("ErrorRow", "Could not load data from profile.<br />You either supplied wrong login or your profile is private.")
-        }
-        else
-        {
-        }
+            @if (OptionModule.IsNone(Model))
+            {
+                @Html.Partial("ErrorRow", "Could not access the profile.<br />You supplied login in wrong format")
+            }
+            else if (OptionModule.IsNone(Model.Value.Item1))
+            {
+                @Html.Partial("ErrorRow", "Could not load data from profile.<br />You either supplied nonexistent login or your profile is private.")
+            }
+            else if (Model.Value.Item1.Value.Masterpiece.Length == 0 && Model.Value.Item1.Value.Great.Length == 0 && Model.Value.Item1.Value.VeryGood.Length == 0)
+            {
+                @Html.Partial("ErrorRow", "Could not find any titles matching your preferences. Try watching some shows from your \"Plan to watch\" list or rating some shows you've already watched.")
+            }
+            else
+            {
+                <div class="span2">
+                    <h2><small>These shows have been picked to fit your taste. <strong>Enjoy!</strong></small></h2>
+                </div>
+                <div class="span10">
+                    @Html.Partial("RatingListControl", new MsdnWeb.Controllers.RecommendationSet(null, Model.Value.Item1.Value.Masterpiece, 10, false))
+                    @Html.Partial("RatingListControl", new MsdnWeb.Controllers.RecommendationSet(null, Model.Value.Item1.Value.Great, 9, false))
+                    @Html.Partial("RatingListControl", new MsdnWeb.Controllers.RecommendationSet(null, Model.Value.Item1.Value.VeryGood, 8, false))
+                </div>
+            }
         </div>
     </div>
 </body>

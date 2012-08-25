@@ -6,16 +6,22 @@
             <td rowspan=@(Model.Titles.Length + 1)><h1 class="rating">@Model.Rating/10</h1></td>
             <td>
                 <span>@Model.Titles[0]</span>
-                <input type="hidden" name="title" value="" disabled="disabled" />
-                <input type="hidden" name="id" value="@Model.Ids[0]" disabled="disabled" />
+                @if (Model.Editable)
+                { 
+                    <input type="hidden" name="title" value="" disabled="disabled" />
+                    <input type="hidden" name="id" value="@Model.Ids[0]" disabled="disabled" />
+                }
             </td>
         </tr>
         @for (int i = 1; i < Model.Titles.Length; i++)
         {
             <tr><td>
             <span>@Model.Titles[i]</span>
+            @if (Model.Editable)
+            { 
                 <input type="hidden" name="title" value="" disabled="disabled" />
                 <input type="hidden" name="id" value="@Model.Ids[i]" disabled="disabled" />
+            }
             </td></tr>
         }
         <tr><td>&nbsp;</td></tr>
