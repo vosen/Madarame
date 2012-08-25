@@ -5,17 +5,17 @@
         <tr>
             <td rowspan=@(Model.Titles.Length + 1)><h1 class="rating">@Model.Rating/10</h1></td>
             <td>
-                <span>@Model.Titles[0].Value</span>
+                <span>@Model.Titles[0]</span>
                 <input type="hidden" name="title" value="" disabled="disabled" />
-                <input type="hidden" name="id" value="@Model.Titles[0].Key" disabled="disabled" />
+                <input type="hidden" name="id" value="@Model.Ids[0]" disabled="disabled" />
             </td>
         </tr>
         @for (int i = 1; i < Model.Titles.Length; i++)
         {
             <tr><td>
-            <span>@Model.Titles[i].Value</span>
+            <span>@Model.Titles[i]</span>
                 <input type="hidden" name="title" value="" disabled="disabled" />
-                <input type="hidden" name="id" value="@Model.Titles[i].Key" disabled="disabled" />
+                <input type="hidden" name="id" value="@Model.Ids[i]" disabled="disabled" />
             </td></tr>
         }
         <tr><td>&nbsp;</td></tr>

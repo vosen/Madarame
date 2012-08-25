@@ -45,18 +45,25 @@
         </div>
     </div>
     <div class="row">
-        <div class="span2">
-            <h2>
-            <small>
-                These shows have been picked to fit <strong>your taste</strong>. Watch them or refine your selection and <strong>generate ranking again</strong>.
-            </small>
-            </h2>
-        </div>
-        <div class="span10" >
-            @Html.Partial("RatingListControl", new MsdnWeb.Controllers.RecommendationSet(Model.Recommendations.Masterpiece, 10, true))
-            @Html.Partial("RatingListControl", new MsdnWeb.Controllers.RecommendationSet(Model.Recommendations.Great, 9, true))
-            @Html.Partial("RatingListControl", new MsdnWeb.Controllers.RecommendationSet(Model.Recommendations.VeryGood, 8, true))
-        </div>
+        @if (Model.Titles.Masterpiece.Length == 0 && Model.Titles.Great.Length == 0 && Model.Titles.VeryGood.Length == 0)
+        {
+            @Html.Partial("ErrorRow", "Could not find any titles matching your preferences. Try adding or removing some ratings.")
+        }
+        else
+        {
+            <div class="span2">
+                <h2>
+                <small>
+                    These shows have been picked to fit <strong>your taste</strong>. Watch them or refine your selection and <strong>generate ranking again</strong>.
+                </small>
+                </h2>
+            </div>
+            <div class="span10" >
+                @Html.Partial("RatingListControl", new MsdnWeb.Controllers.RecommendationSet(Model.Ids.Masterpiece, Model.Titles.Masterpiece, 10, true))
+                @Html.Partial("RatingListControl", new MsdnWeb.Controllers.RecommendationSet(Model.Ids.Great, Model.Titles.Great, 9, true))
+                @Html.Partial("RatingListControl", new MsdnWeb.Controllers.RecommendationSet(Model.Ids.VeryGood, Model.Titles.VeryGood, 8, true))
+            </div>
+        }
     </div>
     }
     </div>

@@ -50,17 +50,7 @@
                     @using (Html.BeginForm("FromMAL", "Recommend", FormMethod.Post))
                     {
                         <div style="padding-bottom:0px; margin-bottom:10px;" class="well">
-                            <div style="padding-right:9px;">
-                                <input style="margin-right:20px" type="text" class="input"/>
-                            </div>
-                            <p>
-                            Examples:
-                            <ul>
-                                <li>askanier</li>
-                                <li>myanimelist.net/profile/askanier</li>
-                                <li>http://myanimelist.net/profile/askanier</li>
-                            </ul>
-                            </p>
+                            @Html.Partial("LoginPickerControl")
                         </div>
                         <div style="padding-top:9px;"  class="well">
                             @Html.Partial("RecommendButton")

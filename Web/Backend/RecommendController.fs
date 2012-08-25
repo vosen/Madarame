@@ -7,9 +7,9 @@ open Npgsql
 open Dapper
 
 type pair<'a,'b> = System.Collections.Generic.KeyValuePair<'a, 'b>
-type RecommendationSet= { Titles : pair<int,string> array; Rating: int; Editable: bool }
+type RecommendationSet= { Ids : int array; Titles : string array; Rating: int; Editable: bool }
 type Recommendations<'a> = { Masterpiece: 'a array; Great : 'a array; VeryGood : 'a array }
-type RecommendationsWithKnown = { Recommendations: Recommendations<pair<int,string>>; Known : pair<string, pair<int,int>> array }
+type RecommendationsWithKnown = { Ids : Recommendations<int>; Titles: Recommendations<string>; Known : pair<string, pair<int,int>> array }
 type TitleQuery = { mutable id : int }
 type TitleResult = { mutable Title : string }
 type ResizeArray<'a> = System.Collections.Generic.List<'a>
@@ -76,17 +76,43 @@ type RecommendController(recommender : Vosen.Juiz.FunkSVD.TitleRecommender, dbPa
                                     Some(pair(first.id, rating))
                     | _ -> Some(pair(id, rating)))
 
-        let recs = 
+        let recIds = 
             correctRatings
             |> recommender.PredictUnknown
             |> RecommendController.PickRecommended 50
         let addTitleToId (ids : int array) =
-            ids |> Array.map (fun id -> pair(id, this.ResolveTitleName id))
-        let recTitles = { Masterpiece = addTitleToId recs.Masterpiece;  Great = addTitleToId recs.Great; VeryGood = addTitleToId recs.VeryGood }
+            ids |> Array.map (this.ResolveTitleName)
+        let recTitles = { Masterpiece = addTitleToId recIds.Masterpiece;  Great = addTitleToId recIds.Great; VeryGood = addTitleToId recIds.VeryGood }
         let known = correctRatings |> Array.map (fun kvp -> pair(this.ResolveTitleName kvp.Key, pair(kvp.Key, kvp.Value)))
-        this.View({ Recommendations = recTitles; Known = known })
+        this.View({ Ids = recIds; Titles = recTitles; Known = known })
+
+    [<AcceptVerbs(HttpVerbs.Get)>]
+    member this.FromMAL() =
+        this.RedirectToRoute("Home")
+
+    static member LoginFromFullUrl (login : string) =
+        let correct, uri = System.Uri.TryCreate(login, System.UriKind.Absolute)
+        if not correct then
+            None
+        else
+            let domainParts = uri.Host.Split('.')
+            if domainParts.Length < 2 || domainParts.[domainParts.Length - 1] <> "net" || domainParts.[domainParts.Length - 2] <> "myanimelist" then
+                None
+            else
+                let pathParts = uri.AbsolutePath.Split('/')
+                if pathParts.Length <> 3 || pathParts.[0] <> "" || pathParts.[1] <> "profile" then
+                    None
+                else
+                    Some(pathParts.[2])
+
+    static member LoginFromInput (input : string) =
+        match input with
+        | _ when not (input.Contains("/")) -> Some(input)
+        | _ ->
+            match (RecommendController.LoginFromFullUrl input) with
+            | Some(login) -> Some(login)
+            | None -> RecommendController.LoginFromFullUrl ("http://" + input)
 
     [<AcceptVerbs(HttpVerbs.Post)>]
     member this.FromMAL(login : string) =
-        this.View(box null)
- 
+        this.View(None)

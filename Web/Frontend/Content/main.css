@@ -75,3 +75,7 @@ input,select,textarea{
 .btn-primary {
     width: 100%;
 }
+
+#big-error {
+    text-align: center;
+}
